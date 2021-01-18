@@ -6,9 +6,9 @@ pipeline {
     agent any
     stages { 
         stage('Build') {
-            steps {
-                dockerImage = docker.build registry
-            }
+            script { 
+                    dockerImage = docker.build registry
+                }
         }
 
         stage('check'){
