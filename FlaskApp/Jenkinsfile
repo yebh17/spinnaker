@@ -4,6 +4,7 @@ pipeline {
         stage('primary') {
             steps {
                 echo 'Hello World'
+                echo $USER
             }
         }
     }
