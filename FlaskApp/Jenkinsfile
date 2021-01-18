@@ -1,9 +1,12 @@
 pipeline {
+    environment {
+    registry = "python-app"
+    }
     agent any
     stages { 
         stage('Build') {
             steps {
-                sh 'cd FlaskApp && docker build -t python-app . && cd ..' 
+                docker.build registry + ":$BUILD_NUMBER"
             }
         }
 
