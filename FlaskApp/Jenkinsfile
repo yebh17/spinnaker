@@ -1,11 +1,22 @@
 pipeline {
     agent any
     stages { 
-        stage('primary') {
+        stage('Build') {
             steps {
-                echo 'Hello World'
-                echo $USER
+                sh 'docker build -t python-app .' 
             }
+        }
+
+        stage('check'){
+            steps {
+                sh 'docker images'
+            }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
         }
     }
 }
