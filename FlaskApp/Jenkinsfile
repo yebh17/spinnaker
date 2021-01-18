@@ -4,11 +4,13 @@ pipeline {
     dockerImage = '' 
     }
     agent any
-    stages { 
-        stage('Build') {
-            script { 
+    stages {
+        stage('Build') { 
+            steps { 
+                script { 
                     dockerImage = docker.build registry
                 }
+            } 
         }
 
         stage('check'){
