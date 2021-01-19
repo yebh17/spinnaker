@@ -16,7 +16,7 @@ pipeline {
                 }
             }
 
-        stage('Deploy') {
+        stage('Push') {
             steps{
                 script {
                     docker.withRegistry( '', registryCredential ) {
@@ -30,14 +30,9 @@ pipeline {
             steps{
                 sh "docker rmi $registry:$BUILD_NUMBER"
                 sh "docker rmi alpine:latest"
+                sh "docker images"
                 }
             }
-
-        stage('check'){
-            steps {
-                sh "docker images"
-            }
-        }
     }
 
     post {
