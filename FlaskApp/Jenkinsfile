@@ -1,7 +1,8 @@
 pipeline {
     environment {
     registry = "python-app"
-    dockerImage = '' 
+    dockerImage = ''
+    registryCredential = 'dockerhub'
     }
     agent any
     stages {
@@ -15,7 +16,19 @@ pipeline {
                 }
             }
 
-        stage('Clean') { 
+        stage('Push') {
+          
+            steps {
+                script {
+                    withDockerRegistry([ credentialsId: "$registryCredential", url: "" ]) {
+                        dockerImage.push("$BUILD_NUMBER")
+                        dockerImage.push('latest')
+                    }
+                }
+            }
+        }
+
+        stage('Clean') {
             steps { 
                 sh "docker rmi $registry:latest"
                 sh "docker rmi alpine:latest"
