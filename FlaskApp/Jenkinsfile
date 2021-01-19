@@ -6,12 +6,14 @@ pipeline {
     agent any
     stages {
         stage('Build') { 
-            steps { 
-                script { 
-                    dockerImage = docker.build registry
+            steps {
+                dir('FlaskApp'){
+                    script {
+                        dockerImage = docker.build registry
+                        }
+                    }
                 }
-            } 
-        }
+            }
 
         stage('check'){
             steps {
