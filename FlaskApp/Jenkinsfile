@@ -15,6 +15,13 @@ pipeline {
                 }
             }
 
+        stage('Clean') { 
+            steps { 
+                sh "docker rmi $registry:latest"
+                sh "docker rmi alpine:latest"
+            }
+        }
+
         stage('check'){
             steps {
                 sh 'docker images'
