@@ -1,7 +1,8 @@
 pipeline {
     environment {
-    registry = "python-app"
-    dockerImage = '' 
+    registry = "48662523/python-app"
+    dockerImage = ''
+    registryCredential = 'dockerhub'
     }
     agent any
     stages {
@@ -9,15 +10,32 @@ pipeline {
             steps {
                 dir('FlaskApp'){
                     script {
-                        dockerImage = docker.build registry
+                        dockerImage = docker.build registry + ":$BUILD_NUMBER"
                         }
                     }
                 }
             }
 
+        stage('Deploy') {
+            steps{
+                script {
+                    docker.withRegistry( '', registryCredential ) {
+                        dockerImage.push()
+                        }
+                    }
+                }
+            }
+
+        stage('Clean') {
+            steps{
+                sh "docker rmi $registry:$BUILD_NUMBER"
+                sh "docker rmi alpine:latest"
+                }
+            }
+
         stage('check'){
             steps {
-                sh 'docker images'
+                sh "docker images"
             }
         }
     }
